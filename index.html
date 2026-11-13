@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#10251c" />
+  <title>Touchline</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">{"imports":{"three":"https://esm.sh/three@0.160.0"}}</script>
+  <script type="module" src="game.js"></script>
+</head>
+<body>
+  <main id="game" aria-label="3D football match">
+    <div class="topbar">
+      <div class="scorebug"><span id="home-abbr" class="team-tag home-tag">HME</span><strong id="score">0 — 0</strong><span id="away-abbr" class="team-tag away-tag">AWY</span><strong id="clock">00:00</strong><span id="half" class="half-tag">1ST</span></div>
+    </div>
+    <section id="main-menu" class="main-menu" aria-label="Game modes">
+      <div class="menu-card">
+        <aside class="menu-aside">
+          <div class="menu-title"><h1>TOUCHLINE</h1></div>
+        </aside>
+        <div class="menu-content">
+          <div id="mode-view" class="menu-view">
+            <div class="mode-heading"><span>GAME MODES</span></div>
+            <div class="mode-grid">
+              <button class="mode-button mode-featured" data-mode="quick"><span class="mode-index">01</span><span>Quick Match</span><b>↗</b></button>
+              <button class="mode-button" data-mode="manager"><span class="mode-index">02</span><span>Manager Career</span><b>SOON</b></button>
+              <button class="mode-button" data-mode="player"><span class="mode-index">03</span><span>Player Career</span><b>SOON</b></button>
+              <button class="mode-button" data-mode="tournament"><span class="mode-index">04</span><span>Tournament</span><b>SOON</b></button>
+              <button class="mode-button" data-mode="ultimate"><span class="mode-index">05</span><span>Ultimate Team</span><b>SOON</b></button>
+              <button class="mode-button" data-mode="training"><span class="mode-index">06</span><span>Training Ground</span><b>SOON</b></button>
+              <button class="mode-button" data-mode="settings"><span class="mode-index">07</span><span>Settings</span><b>SOON</b></button>
+            </div>
+          </div>
+          <div id="team-select-view" class="menu-view menu-subview" hidden>
+            <div class="setup-heading"><button class="menu-back" data-setup-back>← MODES</button><span>QUICK MATCH / TEAMS</span></div>
+            <div class="team-select-grid">
+              <section class="team-side home-side">
+                <div class="side-heading"><span>HOME</span><i></i><span class="side-token">01</span></div>
+                <div class="selectors">
+                  <label><span>COUNTRY</span><select id="home-country"></select></label>
+                  <label><span id="home-secondary-label">LEAGUE</span><select id="home-secondary"></select></label>
+                  <label><span id="home-team-label">TEAM</span><select id="home-team"></select></label>
+                </div>
+                <div class="club-preview"><span id="home-emoji" class="club-emoji">🔴</span><div><strong id="home-team-name">Arsenal</strong><small id="home-team-abbr">ARS</small></div></div>
+              </section>
+              <section class="team-side away-side">
+                <div class="side-heading"><span>AWAY</span><i></i><span class="side-token">02</span></div>
+                <div class="selectors">
+                  <label><span>COUNTRY</span><select id="away-country"></select></label>
+                  <label><span id="away-secondary-label">LEAGUE</span><select id="away-secondary"></select></label>
+                  <label><span id="away-team-label">TEAM</span><select id="away-team"></select></label>
+                </div>
+                <div class="club-preview"><span id="away-emoji" class="club-emoji">🔴</span><div><strong id="away-team-name">Liverpool</strong><small id="away-team-abbr">LIV</small></div></div>
+              </section>
+            </div>
+            <div class="difficulty-row"><label for="difficulty">DIFFICULTY</label><select id="difficulty"><option value="0">Beginner</option><option value="1">Amateur</option><option value="2" selected>Semi-Pro</option><option value="3">Professional</option><option value="4">World Class</option></select></div>
+            <div class="setup-footer"><span id="team-select-error"></span><button id="next-kits" class="launch-button">NEXT · KITS</button></div>
+          </div>
+          <div id="kit-select-view" class="menu-view menu-subview" hidden>
+            <div class="setup-heading"><button class="menu-back" data-kits-back>← TEAMS</button><span>QUICK MATCH / KITS</span></div>
+            <div class="kit-select-grid">
+              <section class="kit-side home-side"><div class="side-heading"><span>HOME</span><i></i><span id="home-kit-abbr" class="side-token">ARS</span></div><div class="kit-preview"><div><strong id="home-kit-name">Arsenal</strong><div id="home-kit-swatch" class="kit-swatch"></div></div></div><label class="kit-picker"><span>CHOOSE KIT</span><select id="home-kit"><option value="home">Home Kit</option><option value="away">Away Kit</option><option value="third">Third Kit</option></select></label></section>
+              <section class="kit-side away-side"><div class="side-heading"><span>AWAY</span><i></i><span id="away-kit-abbr" class="side-token">LIV</span></div><div class="kit-preview"><div><strong id="away-kit-name">Liverpool</strong><div id="away-kit-swatch" class="kit-swatch"></div></div></div><label class="kit-picker"><span>CHOOSE KIT</span><select id="away-kit"><option value="away">Away Kit</option><option value="home">Home Kit</option><option value="third">Third Kit</option></select></label></section>
+            </div>
+            <div class="setup-footer"><span>Choose a kit for each side</span><button id="start-quick-match" class="launch-button">NEXT · SIDE</button></div>
+          </div>
+          <div id="side-select-view" class="menu-view menu-subview" hidden>
+            <div class="setup-heading"><button class="menu-back" data-side-back>← KITS</button><span>QUICK MATCH / YOUR SIDE</span></div>
+            <div class="side-choice-grid">
+              <button class="side-choice selected" data-user-side="0"><span>HOME TEAM</span><strong id="choose-home-name">Arsenal</strong><small>Home side · first-half kickoff</small></button>
+              <button class="side-choice" data-user-side="1"><span>AWAY TEAM</span><strong id="choose-away-name">Liverpool</strong><small>Away side · home kicks off first</small></button>
+            </div>
+            <div class="setup-footer"><span id="user-side-note">You control the home team and kick off first.</span><button id="confirm-match" class="launch-button">START MATCH</button></div>
+          </div>
+          <div id="coming-view" class="menu-view menu-subview" hidden>
+            <button class="menu-back" data-back>← ALL MODES</button>
+            <span class="coming-soon">COMING SOON</span>
+            <h2 id="coming-title">Manager Career</h2>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="lower-right"><div class="power-wrap" id="power-wrap"><span id="power-label">SHOT POWER</span><div class="power-track"><i id="power-fill"></i></div></div></div>
+    <div id="center-message" class="center-message"><span>KICK OFF</span></div>
+    <div id="halftime" class="match-end hidden"><span class="end-label">HALF TIME</span><strong id="half-score">0 — 0</strong><button id="continue-match">CONTINUE</button></div>
+    <div id="load-state" class="loading"><span class="loader"></span><span>PREPARING THE PITCH</span></div>
+    <div id="match-end" class="match-end hidden"><span class="end-label">FULL TIME</span><strong id="final-score">0 — 0</strong><button id="restart">PLAY AGAIN</button></div>
+    <div class="vignette"></div>
+  </main>
+</body>
+</html>
